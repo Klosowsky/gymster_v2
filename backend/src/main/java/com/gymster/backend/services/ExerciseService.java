@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ExerciseService {
-    @Autowired
     ExerciseRepository exerciseRepository;
+    @Autowired
+    public ExerciseService(ExerciseRepository exerciseRepository){
+        this.exerciseRepository=exerciseRepository;
+    }
 
     public void saveExercise(Exercise exercise){
         exerciseRepository.save(exercise);
