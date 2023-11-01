@@ -8,6 +8,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Header() {
   const role = localStorage.getItem("role");
+  const username = localStorage.getItem("username");
   const navigate = useNavigate();
   console.log('ee' +role);
     const [open, setOpen] = React.useState(false);
@@ -57,7 +58,7 @@ function Header() {
 
       { /* Assume localUsername and localImage are props */ }
       <div className="header-user-details" onClick={handleOpen}>
-        <div className="user-username">"test"</div>
+        <div className="user-username">{username}</div>
 
         <div className="user-photo">
          {// <img className="user-profile-img" src={`/public/uploads/${localImage}`} />

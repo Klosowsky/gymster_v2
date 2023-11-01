@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -25,9 +27,12 @@ public class JwtTokenService {
         Date currentDate = new Date();
         Date expiredAtDate = new Date(currentDate.getTime() + expirationMs);
         System.out.println("test");
+        List<String> roles = new ArrayList<>();
+        roles.add(user.getRole().getName());
         return Jwts.builder().
                 setSubject(user.getUsername()).
                 setIssuedAt(currentDate).
+                claim("roles",roles).
                 setExpiration(expiredAtDate).
                 signWith(SignatureAlgorithm.HS256, secret).
                 compact();

@@ -46,8 +46,7 @@ public class UserService {
 
         User.UserBuilder userBuilder = User.builder();
         User user = userBuilder.username(registerRequestBody.getUsername()).
-                password(passwordEncoder.encode(registerRequestBody.getPassword())).
-                email(registerRequestBody.getEmail())
+                password(passwordEncoder.encode(registerRequestBody.getPassword()))
                 .role(roleRepository.findByName("User")).build();
         UserDetails userDetails = new UserDetails(null,user,registerRequestBody.getEmail());
         userRepository.save(user);
