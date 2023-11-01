@@ -3,6 +3,7 @@ package com.gymster.backend.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,6 +35,7 @@ public class SecurityConfig{ //} extends SecurityConfigurerAdapter<DefaultSecuri
                         "/doc/swagger-ui.html","/doc/swagger-ui/**",
                         "/hello"
                 ).permitAll()
+                .requestMatchers("/admin/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -51,4 +53,5 @@ public class SecurityConfig{ //} extends SecurityConfigurerAdapter<DefaultSecuri
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }

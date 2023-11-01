@@ -1,11 +1,13 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
+import Header from "./Header";
 
 const Home = () => {
 
 
     return (
         <section>
+            <Header />
             <h1>Home</h1>
             <br />
             <p>You are logged in!</p>

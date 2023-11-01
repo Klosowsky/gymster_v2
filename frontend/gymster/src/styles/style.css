@@ -67,6 +67,14 @@ img.icon{
     height: auto;
 }
 
+form.login>input{
+    font-size: 1em;
+}
+
+form.login>button{
+    font-size: 1em;
+}
+
 form.login{
     display: flex;
     flex-direction: column;
@@ -75,10 +83,11 @@ form.login{
     background: #FFFFFF;
     border: 1px solid #707070;
     border-radius: 35px;
-    width: 70%;
+    width: 60%;
     padding-bottom: 2em;
     padding-top: 1em;
-
+    font-size: 1.3em;
+    text-align: center;
 }
 
 form.register{
@@ -93,6 +102,15 @@ form.register{
     width: 70%
 
 }
+
+form.register>input{
+    font-size: 1em;
+}
+
+form.register>button{
+    font-size: 1em;
+}
+
 .checkbox-inline{
     display: flex;
     flex-direction: row;
@@ -439,6 +457,56 @@ a {
 .panel-details-form>button{
     align-self: center;
 }
+.header-logo>a{
+    line-height: 1em;
+}
+
+
+
+
+
+
+.menu {
+  position: absolute;
+  color: white;
+  list-style-type: none;
+  margin: 5px 0;
+  padding: 0;
+  right:0;
+  top: 7vh;
+
+  border: 1px solid grey;
+  width: 150px;
+}
+
+.menu > li {
+  margin: 0;
+
+  background-color: #3D4750;
+}
+
+.menu > li:hover {
+  background-color: #505A63;
+}
+
+.menu > li > button {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: none;
+  color: inherit;
+  border: 1px solid grey;
+  border-radius: 0;
+  padding: 7px;
+  margin: 0;
+  font: inherit;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+
+
+
 
 
 @media only screen and (min-device-width: 356px) and (max-device-width: 820px) {
@@ -469,11 +537,18 @@ a {
         left: 0;
         transform: none;
         padding-left: 0;
+        max-width: 60%;
+        width: 100%;
     }
 
+    .header-logo>a>img{
+        height: 70%;
+        max-width: 100%;
+    }
+
+
     .user-username{
-        display: none;
-        visibility: hidden;
+        font-size: 0.6em;
 
     }
 
@@ -574,7 +649,22 @@ a {
     .error-message{
         font-size: 15px;
     }
+    .header-logo>a{
+        max-width: 100%;
+        line-height: 1em;
+        display: flex;
+        align-items:center;
+        padding-left: 10px;
+    }
+
+    .menu > li > button {
+        font-size: 0.8em;
+    }
+
+
+
 }
+
 
 
 @media only screen and (max-device-width: 355px) {
@@ -603,6 +693,7 @@ a {
         left: 0;
         transform: none;
         padding-left: 0;
+        
     }
 
     .user-username{
@@ -697,6 +788,21 @@ a {
     }
     .error-message{
         font-size: 14px;
+    }
+
+        .header-logo>a{
+        max-width: 100%;
+        line-height: 1em;
+        display: flex;
+        align-items:center;
+        padding-left: 5px;
+    }
+    .header-logo>a>img{
+        height: 70%;
+        max-width: 100%;
+    }
+    .menu > li > button {
+        font-size: 0.8em;
     }
 
 }

@@ -6,10 +6,13 @@ import com.gymster.backend.repositories.UserRepository;
 import com.gymster.backend.security.models.AuthCheckBody;
 import com.gymster.backend.security.models.AuthenticationResponse;
 import com.gymster.backend.security.models.LoginRequestBody;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -32,7 +35,6 @@ public class AuthenticationService {
         }
         System.out.println("test4 "+user.getUsername());
         String token = jwtTokenService.generateToken(user);
-        System.out.println("test5");
         return new AuthenticationResponse(token, user.getRole().getId());
     }
 
