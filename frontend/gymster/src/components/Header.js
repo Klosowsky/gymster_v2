@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import logoText from '../public/img/logo.svg'; 
+import  '../styles/style.css';
 import {  useNavigate ,Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -61,8 +62,9 @@ function Header() {
         <div className="user-username">{username}</div>
 
         <div className="user-photo">
-         {// <img className="user-profile-img" src={`/public/uploads/${localImage}`} />
-}
+          <img src="/uploads/Will_Smith.jpg" className="user-profile-img" alt="IMAGE" />   {// TO DO - Add link to valid photo
+          }
+
         </div>
 
         {open ? (

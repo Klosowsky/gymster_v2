@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {  useNavigate ,Link } from 'react-router-dom';
 import {globalMessages}  from '../global/Messages'
 import { C_API_BASE_URL } from '../global/Api';
+import  '../styles/style.css';
 import logoIcon from '../public/img/logo_icon.svg';
 import logoText from '../public/img/logo.svg';
 
