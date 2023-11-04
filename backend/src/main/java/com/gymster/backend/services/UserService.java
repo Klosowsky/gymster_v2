@@ -53,6 +53,11 @@ public class UserService {
         userDetailsRepository.save(userDetails);
     }
 
+    public User getUserById(Long id){
+        return userRepository.findById(id).orElseThrow();
+
+    }
+
 
 
 }

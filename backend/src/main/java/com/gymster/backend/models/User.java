@@ -1,13 +1,11 @@
 package com.gymster.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
+import lombok.*;
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,12 +19,14 @@ public class User {
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+
+    @OneToOne( cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private UserDetails userDetails;
 
