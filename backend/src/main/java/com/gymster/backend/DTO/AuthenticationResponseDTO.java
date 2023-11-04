@@ -1,4 +1,4 @@
-package com.gymster.backend.security.models;
+package com.gymster.backend.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationResponse {
+public class AuthenticationResponseDTO {
     private String token;
     private Long roleId;
+    private String photo;
 }

@@ -48,9 +48,14 @@ public class UserService {
         User user = userBuilder.username(registerRequestBody.getUsername()).
                 password(passwordEncoder.encode(registerRequestBody.getPassword()))
                 .role(roleRepository.findByName("User")).build();
-        UserDetails userDetails = new UserDetails(null,user,registerRequestBody.getEmail());
+        UserDetails userDetails = new UserDetails(user,registerRequestBody.getEmail());
         userRepository.save(user);
         userDetailsRepository.save(userDetails);
+    }
+
+    public User getUserById(Long id){
+        return userRepository.findById(id).orElseThrow();
+
     }
 
 
