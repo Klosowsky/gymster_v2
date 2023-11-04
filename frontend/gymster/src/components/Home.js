@@ -3,31 +3,32 @@ import { useState,useEffect } from "react";
 import  '../styles/style.css';
 import  '../styles/trainings.css';
 import Header from "./Header";
-import will from "../public/uploads/Will_Smith.jpg"
+import { C_API_BASE_URL } from '../global/Api';
+import {globalMessages}  from '../global/Messages'
 
 
 
 
 function TrainingItem({ training }) {
-    console.log('aa'+process.env.PUBLIC_URL);
+    console.log('aa ' + JSON.stringify(training) );
     const username = localStorage.getItem("username");
     return (
 
 
-        <Link to={`/training/${training.trainingId}`}>
+        <Link to={`/training/${training.id}`}>
             <div className="training-item">
                 <div className="training-item-usr">
-                    { username===training.username ? 
+                    { username===training.user.username ? 
                     (<i class="fa-solid fa-user fa-xl"></i>)
                     : (null)
                     }
                     
                 </div>
                 <div className="training-item-title">
-                    {training.trainingTitle}
+                    {training.title}
                 </div>
                 <div className="training-item-descr">
-                    {training.getTrainingDescription}
+                    {training.description}
                 </div>
                 <div className="training-item-rate">
                     <div className="likes">
@@ -44,7 +45,7 @@ function TrainingItem({ training }) {
                     <img src="/uploads/Will_Smith.jpg" className="user-profile-img" alt="IMAGE" />
                     </div>
                 </div>
-                <div className="training-username"> <p>{training.username}</p>
+                <div className="training-username"> <p>{training.user.username}</p>
                 </div>
 
             </div>
@@ -63,9 +64,11 @@ const Home = () => {
     const handleSearchChange = (e) => {
         setSearchText(e.target.value); 
     };
+  
 
     useEffect(() => {
-    const testTraining = JSON.stringify({
+    fetchTrainings();
+    /*const testTraining = JSON.stringify({
         trainings : [
             {
             trainingId : 1,
@@ -89,12 +92,64 @@ const Home = () => {
     });
     const jsonObject = JSON.parse(testTraining);
     console.log("ee");
-    setTrainings(jsonObject.trainings);
+    setTrainings(jsonObject.trainings);*/
 }, []);
 
     function fetchTrainings(){
+
+
+
+
+
+        try {
+            const storedToken = localStorage.getItem("token");
+            const searchData = {
+                trainingName: searchText,
+              };
+            fetch(C_API_BASE_URL+'/training/getallbyname', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${storedToken}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(searchData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Response ok!");
+                  return response.json();
+                }
+                else {
+                  //setErrMsg(globalMessages.internalServerError);
+                  console.log("Response not ok!1 " );
+                  return null;
+                }
+              })
+              .then((data) => {
+                if (data) {
+                    console.log("yyyyyyyy ");
+                    console.log("m "+ JSON.stringify(data));
+                
+                   setTrainings(data);
+                } 
+              })
+              .catch((error) => {
+                console.log("Response not ok!2 " +error);
+                //setErrMsg(error);
+              });
+          } catch (err) {
+            console.log("Response not ok!3 "+err);
+           // setErrMsg(err);
+         }
+
+
+
+
+
+
+
         
-        console.log("title like: "+searchText);
+        /*console.log("title like: "+searchText);
         const custom = JSON.stringify({
             trainings : [
                 {
@@ -110,7 +165,7 @@ const Home = () => {
         });
     const jsonObjectt = JSON.parse(custom);
     console.log("aaaaaaa");
-    setTrainings(jsonObjectt.trainings);
+    setTrainings(jsonObjectt.trainings);*/
     }
 
     return (
