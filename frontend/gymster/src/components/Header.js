@@ -10,6 +10,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 function Header() {
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
+  const photo = localStorage.getItem("photo");
   const navigate = useNavigate();
   console.log('ee' +role);
     const [open, setOpen] = React.useState(false);
@@ -28,7 +29,6 @@ function Header() {
     }
   };
 
-  // Attach the document click handler to the window when the component mounts
   React.useEffect(() => {
     window.addEventListener('click', handleDocumentClick);
     return () => {
@@ -56,13 +56,11 @@ function Header() {
          <img src={logoText} alt="Logo" className='"header-logo-img'/>
        </Link>
       </div>
-
-      { /* Assume localUsername and localImage are props */ }
       <div className="header-user-details" onClick={handleOpen}>
         <div className="user-username">{username}</div>
 
         <div className="user-photo">
-          <img src="/uploads/Will_Smith.jpg" className="user-profile-img" alt="IMAGE" />   {// TO DO - Add link to valid photo
+          <img src={`/uploads/${photo}`} className="user-profile-img" alt="IMAGE" />   {// TO DO - Add link to valid photo
           }
 
         </div>
@@ -85,14 +83,7 @@ function Header() {
 
 
 
-        {/*isDropdownVisible && (
-          <div className="dropdown-menu-content">
-            <a href="/userpanel">Your profile</a>
-            {//localPrivilege === 1 && <a href="/adminpanel">Admin panel</a>
-            }
-            <a href="/logout">Log out</a>
-          </div>
-        )*/}
+        {}
       </div>
     </div>
   );

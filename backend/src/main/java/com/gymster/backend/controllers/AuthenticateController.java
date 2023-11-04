@@ -2,7 +2,7 @@ package com.gymster.backend.controllers;
 
 import com.gymster.backend.DTO.AuthCheckDTO;
 import com.gymster.backend.security.models.AuthCheckBody;
-import com.gymster.backend.security.models.AuthenticationResponse;
+import com.gymster.backend.DTO.AuthenticationResponseDTO;
 import com.gymster.backend.security.models.LoginRequestBody;
 import com.gymster.backend.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticateController {
     private final AuthenticationService authenticationService;
 
-
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequestBody loginRequestBody){
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody LoginRequestBody loginRequestBody){
         try{
-            System.out.println("test1");
-            AuthenticationResponse authResponse = authenticationService.authorize(loginRequestBody);
-            System.out.println("test6");
-            System.out.println("token = " +authResponse.getToken());
-            System.out.println("role = "+authResponse.getRoleId());
-            return ResponseEntity.ok(authResponse);
+            return ResponseEntity.ok(authenticationService.authorize(loginRequestBody));
         }
         catch (BadCredentialsException | InternalAuthenticationServiceException badCredentialsException){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -42,9 +36,8 @@ public class AuthenticateController {
 
     @PostMapping("/check")
     public ResponseEntity<AuthCheckDTO> isAuthValid(@RequestBody AuthCheckBody authCheckBody){
-        System.out.println("in contreoller");
         try{
-                return ResponseEntity.ok(new AuthCheckDTO(authenticationService.isAuthValid(authCheckBody)));
+            return ResponseEntity.ok(new AuthCheckDTO(authenticationService.isAuthValid(authCheckBody)));
         }catch(Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

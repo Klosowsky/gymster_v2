@@ -27,6 +27,12 @@ public class UserDetails {
 
     private String email;
 
+    private String photo = "default_profile.jpg";
+
+    public UserDetails(User user, String email){
+        this.user=user;
+        this.email=email;
+    }
 
 
 }

@@ -40,11 +40,12 @@ const Login = () => {
       if (response.status === 200) {
 
             const data = await response.json();
-            const {token , roleId} = data;
+            const {token , roleId, photo} = data;
             const roles = [roleId];
             localStorage.setItem('username', user);
             localStorage.setItem('role', roles);
             localStorage.setItem('token', token);
+            localStorage.setItem('photo', photo);
             navigate('/home');
     }
     else if (response.status === 401){

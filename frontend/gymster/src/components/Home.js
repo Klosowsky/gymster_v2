@@ -42,7 +42,7 @@ function TrainingItem({ training }) {
                 </div>
                 <div className="training-photo-position">
                     <div className="training-user-photo">
-                    <img src="/uploads/Will_Smith.jpg" className="user-profile-img" alt="IMAGE" />
+                    <img src={`/uploads/${training.user.userDetails.photo}`} className="user-profile-img" alt="IMAGE" />
                     </div>
                 </div>
                 <div className="training-username"> <p>{training.user.username}</p>
@@ -68,38 +68,10 @@ const Home = () => {
 
     useEffect(() => {
     fetchTrainings();
-    /*const testTraining = JSON.stringify({
-        trainings : [
-            {
-            trainingId : 1,
-            trainingTitle: 'Test training',
-            getTrainingDescription: "Example training description",
-            likes: 321,
-            dislikes : 123,
-            username : "testUser",
-            photoUrl : "../public/uploads/Will_Smith.jpg",
-            },
-            {
-            trainingId : 2,
-            trainingTitle: 'Test training 2',
-            getTrainingDescription: "Example training description 2",
-            likes: 3211,
-            dislikes : 1231,
-            username : "matias",
-            photoUrl : "../public/uploads/Will_Smith.jpg",
-            }
-        ]
-    });
-    const jsonObject = JSON.parse(testTraining);
-    console.log("ee");
-    setTrainings(jsonObject.trainings);*/
+   
 }, []);
 
     function fetchTrainings(){
-
-
-
-
 
         try {
             const storedToken = localStorage.getItem("token");
@@ -142,30 +114,6 @@ const Home = () => {
            // setErrMsg(err);
          }
 
-
-
-
-
-
-
-        
-        /*console.log("title like: "+searchText);
-        const custom = JSON.stringify({
-            trainings : [
-                {
-                trainingId : 1,
-                trainingTitle: 'Test traininggggggg',
-                getTrainingDescription: "Example training description",
-                likes: 321,
-                dislikes : 123,
-                username : "testUser",
-                photoUrl : "../public/uploads/Will_Smith.jpg",
-                }
-            ]
-        });
-    const jsonObjectt = JSON.parse(custom);
-    console.log("aaaaaaa");
-    setTrainings(jsonObjectt.trainings);*/
     }
 
     return (

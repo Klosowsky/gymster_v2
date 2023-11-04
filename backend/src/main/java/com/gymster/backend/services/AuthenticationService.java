@@ -4,15 +4,12 @@ package com.gymster.backend.services;
 import com.gymster.backend.models.User;
 import com.gymster.backend.repositories.UserRepository;
 import com.gymster.backend.security.models.AuthCheckBody;
-import com.gymster.backend.security.models.AuthenticationResponse;
+import com.gymster.backend.DTO.AuthenticationResponseDTO;
 import com.gymster.backend.security.models.LoginRequestBody;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class AuthenticationService {
     private final JwtTokenService jwtTokenService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse authorize(LoginRequestBody loginRequestBody){
+    public AuthenticationResponseDTO authorize(LoginRequestBody loginRequestBody){
         System.out.println("test2 "+loginRequestBody.getUsername());
         System.out.println("test3");
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestBody.getUsername(), loginRequestBody.getPassword()));
@@ -35,7 +32,7 @@ public class AuthenticationService {
         }
         System.out.println("test4 "+user.getUsername());
         String token = jwtTokenService.generateToken(user);
-        return new AuthenticationResponse(token, user.getRole().getId());
+        return new AuthenticationResponseDTO(token, user.getRole().getId(),user.getUserDetails().getPhoto());
     }
 
     public boolean isAuthValid(AuthCheckBody authCheckBody){
