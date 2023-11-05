@@ -4,6 +4,7 @@ import  Home  from "./components/Home";
 import  ProtectedRoute  from "./components/ProtectedRoute";
 import  PublicRoute  from "./components/PublicRoute";
 import Register from "./components/Register";
+import  AddTraining  from "./components/AddTraining";
 
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
         <Route path="/home" element={ <ProtectedRoute><Home /></ProtectedRoute> }/>
+        <Route path="/addtraining" element={ <ProtectedRoute><AddTraining /></ProtectedRoute> } />
       </Routes>
     </div>
   );
