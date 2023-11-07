@@ -15,6 +15,7 @@ const AddTraining = () => {
     "2": "Exercise2",
     "3": "Exercise3",
   };
+  
 
 
   const handleTitleChange = (event) => {
