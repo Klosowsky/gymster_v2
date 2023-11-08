@@ -1,21 +1,40 @@
 import Header from "./Header";
 import  '../styles/style.css';
 import  '../styles/trainings.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { C_API_BASE_URL } from '../global/Api';
+import {  useNavigate  } from 'react-router-dom';
+
+
 
 
 const AddTraining = () => {
 
+  
+
+  useEffect(() => {
+
+    fetchExercises()
+
+}, []);
+
+  function fetchExercises() {
+
+    console.log('fetch exercises');   /* TO DO: exercises from database - API call */
+
+
+  }
+
   const [formComponents, setFormComponents] = useState([]);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
+  const navigate = useNavigate();
 
-  const exerciseOptions = {             /* TO DO: exercises from database - API call */
+  const exerciseOptions = {             
     "1": "Exercise1",
     "2": "Exercise2",
     "3": "Exercise3",
   };
-  
 
 
   const handleTitleChange = (event) => {
@@ -45,6 +64,7 @@ const AddTraining = () => {
       series: '',
       reps: '',
       exercise: '',
+      valid: true,
     };
 
     const updatedComponents = [...formComponents];
@@ -106,8 +126,58 @@ const AddTraining = () => {
         trainingDetails : formComponents,
       };
       console.log(JSON.stringify(initialData));
+      
+    var it = 0;
 
-      // TO DO: CALL API and save training, perhaps some validations?
+    initialData.trainingDetails.forEach(item => {
+      item.inputs.forEach(input => {
+        if( input.exercise === '' || input.reps === '' || input.series === ''){          
+          it++;
+        }
+      });
+    });
+
+  if(it>0){
+    alert("Invalid values");
+  }
+  else{
+    const storedToken = localStorage.getItem("token");
+    try {
+      fetch(C_API_BASE_URL+'/training/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(initialData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Response ok!");
+            return response.json();
+          }
+          else {
+            //setErrMsg(globalMessages.internalServerError);
+            console.log("Response not ok! " );
+            return null;
+          }
+        })
+        .then((data) => {
+          if (data) {
+              console.log("id = " + data.trainingId);
+              navigate('/training/'+data.trainingId);
+          } 
+        })
+        .catch((error) => {
+          console.log("Response not ok!2 " +error);
+          //setErrMsg(error);
+        });
+    } catch (err) {
+      console.log("Response not ok!3 "+err);
+     // setErrMsg(err);
+   }
+
+  }
 
   };
 
@@ -158,7 +228,7 @@ const AddTraining = () => {
                                         <div className="training-box-add-exercise-list" id="trn-day-1">
                                         {component.inputs.map((input) => (
                                             <div key={input.id}>
-                                                <div className="add-exercise-details" id="'+newExerciseId+'"> 
+                                                <div className="add-exercise-details"> 
                                                     <div className="my-inline-pos"> 
                                                         <select className="select-add-exercise" value={input.exercise} onChange={(e) => handleExerciseChange(component.id, input.id, e.target.value)}> 
                                                             <option value="" disabled hidden >Choose exercise</option> 

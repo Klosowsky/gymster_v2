@@ -2,6 +2,7 @@ package com.gymster.backend.controllers;
 
 
 import com.gymster.backend.DTO.TrainingGeneralDTO;
+import com.gymster.backend.DTO.TrainingIdDTO;
 import com.gymster.backend.DTO.TrainingNameDTO;
 import com.gymster.backend.DTO.TrainingUploadDTO;
 import com.gymster.backend.models.*;
@@ -22,12 +23,7 @@ import java.util.List;
 public class TrainingController {
 
     private final TrainingService trainingService;
-    private final TrainingDayService trainingDayService;
-    private final ExerciseService exerciseService;
-    private final TrainingSessionService trainingSessionService;
 
-    private final TrainingDayRepository trainingDayRepository;
-    private final ExerciseRepository exerciseRepository;
 
     @GetMapping("/getall")
     public ResponseEntity<List<Training>> getAllTrainings(){
@@ -37,7 +33,6 @@ public class TrainingController {
             System.out.println(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @PostMapping("/getallbyname")
@@ -48,25 +43,19 @@ public class TrainingController {
             System.out.println(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadTraining (@RequestBody TrainingUploadDTO trainingUploadDTO){
+    public ResponseEntity<TrainingIdDTO> uploadTraining (@RequestBody TrainingUploadDTO trainingUploadDTO){
         try{
-            trainingService.uploadTraining(trainingUploadDTO);
-            return ResponseEntity.ok("ok");
-
+            if(!trainingService.validateTraining(trainingUploadDTO)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            return ResponseEntity.ok(new TrainingIdDTO(trainingService.uploadTraining(trainingUploadDTO).getId()));
         }catch (Exception ex){
             System.out.println( ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-
-
     }
-
-
-
 
 }

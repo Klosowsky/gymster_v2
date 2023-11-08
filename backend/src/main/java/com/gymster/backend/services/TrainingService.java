@@ -47,9 +47,9 @@ public class TrainingService {
     }
 
     @Transactional(rollbackOn = Exception. class)
-    public boolean uploadTraining(TrainingUploadDTO trainingUploadDTO){
+    public Training uploadTraining(TrainingUploadDTO trainingUploadDTO){
+        Training training = new Training();
         try {
-            Training training = new Training();
             training.setTitle(trainingUploadDTO.getTrainingTitle());
             training.setDescription(trainingUploadDTO.getTrainingDesc());
             training.setUser(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow());
@@ -79,7 +79,7 @@ public class TrainingService {
             System.out.println(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
         }
-        return true;
+        return training;
     }
 
 
@@ -94,5 +94,25 @@ public class TrainingService {
         return extractedList;
     }
 
-
+    public boolean validateTraining(TrainingUploadDTO trainingUploadDTO){
+        try {
+            if (trainingUploadDTO.getTrainingTitle() == null || trainingUploadDTO.getTrainingDesc() == null) {
+                return false;
+            }
+            for (TrainingUploadDetailDTO trainingUploadDetailDTO : trainingUploadDTO.getTrainingDetails()) {
+                for (TrainingUploadInputDTO trainingUploadInputDTO : trainingUploadDetailDTO.getInputs()) {
+                    if (trainingUploadInputDTO.getExercise() == null ||
+                            exerciseRepository.findById(trainingUploadInputDTO.getExercise()).orElse(null) == null ||
+                            trainingUploadInputDTO.getReps() == 0 ||
+                            trainingUploadInputDTO.getSeries() == 0
+                    ) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }catch (Exception ex){
+            return false;
+        }
+    }
 }
