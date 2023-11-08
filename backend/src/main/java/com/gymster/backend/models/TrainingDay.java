@@ -12,21 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "trainings")
-public class Training {
+@Table( name = "training_days")
+public class TrainingDay {
 
     @Id
+    @Column(name = "training_day_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @ManyToOne
-    private User user;
+    @JoinColumn( name = "training_id")
+    Training training;
 
-    private String title;
+    int dayNumber;
 
-    private String description;
-    private int likes = 0;
-    private int dislikes = 0;
 
 
 
