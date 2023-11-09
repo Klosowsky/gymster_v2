@@ -35,7 +35,7 @@ public class SecurityConfig{ //} extends SecurityConfigurerAdapter<DefaultSecuri
                         "/doc/swagger-ui.html","/doc/swagger-ui/**",
                         "/hello"
                 ).permitAll()
-                .requestMatchers("/admin/users").hasRole("ADMIN")
+                .requestMatchers("/admin/users","exercise/add").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -115,4 +115,48 @@ public class TrainingService {
             return false;
         }
     }
+
+    public TrainingDTO printTraining(Long id){
+        try {
+            Training training = trainingRepository.findById(id).orElseThrow();
+            List<TrainingDetailDTO> trainingDetailDTOList = new ArrayList<>();
+            for(TrainingDay trainingDay : trainingDayRepository.findAllByTraining(training)){
+                TrainingDetailDTO trainingDetailDTO = new TrainingDetailDTO();
+                trainingDetailDTO.setId(trainingDay.getDayNumber());
+
+                List<TrainingInputDTO> trainingInputDTOList = new ArrayList<>();
+                int i = 0;
+                for(TrainingSession trainingSession : trainingSessionRepository.findAllByTrainingDay(trainingDay)){
+
+                    TrainingInputDTO trainingInputDTO = TrainingInputDTO.builder()
+                            .id((long) i)
+                            .exerciseName(trainingSession.getExercise().getName())
+                            .series(trainingSession.getSeries())
+                            .reps(trainingSession.getReps())
+                            .build();
+                    trainingInputDTOList.add(trainingInputDTO);
+                    i++;
+                }
+                trainingDetailDTO.setInputs(trainingInputDTOList);
+                trainingDetailDTOList.add(trainingDetailDTO);
+
+            }
+            return TrainingDTO.builder()
+                    .id(training.getId())
+                    .trainingTitle(training.getTitle())
+                    .trainingDesc(training.getDescription())
+                    .username(training.getUser().getUsername())
+                    .photoUrl(training.getUser().getUserDetails().getPhoto())
+                    .likes(training.getLikes())
+                    .dislikes(training.getDislikes())
+                    .trainingDetails(trainingDetailDTOList)
+                    .build();
+
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+
+    }
+
 }
