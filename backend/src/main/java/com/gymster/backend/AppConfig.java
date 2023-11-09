@@ -42,7 +42,7 @@ public class AppConfig {
                 .info(new Info().title("Gymster REST API")
                         .description("REST API endpoints for gymster application.To get Bearer Token use /auth/login endpoint." +
                                 "Test credentials: username - test_swagger , password - test_swagger")
-                        .version("1.0").contact(new Contact().name("Mateusz Kłos")
+                        .version("1.0").contact(new Contact().name("Mateusz Kłosss")
                                 .email("mateusz.klos.20@gmail.com")));
     }
 

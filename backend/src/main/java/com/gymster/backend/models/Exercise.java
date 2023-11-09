@@ -16,4 +16,8 @@ public class Exercise {
     @Column(name = "exercise_id")
     private Long id;
     private String name;
+
+    public Exercise(String name){
+        this.name=name;
+    }
 }

@@ -78,13 +78,11 @@ const Home = () => {
             const searchData = {
                 trainingName: searchText,
               };
-            fetch(C_API_BASE_URL+'/training/getallbyname', {
-              method: 'POST',
+            fetch(C_API_BASE_URL+'/training/getallbyname?trainingName='+searchText, {
+              method: 'GET',
               headers: {
                 'Authorization': `Bearer ${storedToken}`,
-                'Content-Type': 'application/json',
               },
-              body: JSON.stringify(searchData),
             })
               .then((response) => {
                 if (response.ok) {

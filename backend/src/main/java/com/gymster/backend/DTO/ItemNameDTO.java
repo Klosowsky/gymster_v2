@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class TrainingNameDTO {
-    private String trainingName;
+public class ItemNameDTO {
+    private String itemName;
 }

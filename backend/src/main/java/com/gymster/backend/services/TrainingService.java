@@ -1,8 +1,8 @@
 package com.gymster.backend.services;
 
-import com.gymster.backend.DTO.TrainingUploadDTO;
-import com.gymster.backend.DTO.TrainingUploadDetailDTO;
-import com.gymster.backend.DTO.TrainingUploadInputDTO;
+import com.gymster.backend.DTO.TrainingDTO;
+import com.gymster.backend.DTO.TrainingDetailDTO;
+import com.gymster.backend.DTO.TrainingInputDTO;
 import com.gymster.backend.models.SessionExerciseKey;
 import com.gymster.backend.models.Training;
 import com.gymster.backend.models.TrainingDay;
@@ -47,29 +47,29 @@ public class TrainingService {
     }
 
     @Transactional(rollbackOn = Exception. class)
-    public Training uploadTraining(TrainingUploadDTO trainingUploadDTO){
+    public Training uploadTraining(TrainingDTO trainingDTO){
         Training training = new Training();
         try {
-            training.setTitle(trainingUploadDTO.getTrainingTitle());
-            training.setDescription(trainingUploadDTO.getTrainingDesc());
+            training.setTitle(trainingDTO.getTrainingTitle());
+            training.setDescription(trainingDTO.getTrainingDesc());
             training.setUser(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow());
             trainingRepository.save(training);
             System.out.println("saved training - " +training.getId());
-            for(TrainingUploadDetailDTO trainingUploadDetailDTO : trainingUploadDTO.getTrainingDetails()){
-                TrainingDay trainingDay = new TrainingDay(null,training,trainingUploadDetailDTO.getId());
+            for(TrainingDetailDTO trainingDetailDTO : trainingDTO.getTrainingDetails()){
+                TrainingDay trainingDay = new TrainingDay(null,training, trainingDetailDTO.getId());
                 trainingDayRepository.save(trainingDay);
                 System.out.println("saved training day - " + trainingDay.getId());
-                for(TrainingUploadInputDTO trainingUploadInputDTO : trainingUploadDetailDTO.getInputs()){
-                    System.out.println("Input id = "+trainingUploadInputDTO.getId());
+                for(TrainingInputDTO trainingInputDTO : trainingDetailDTO.getInputs()){
+                    System.out.println("Input id = "+ trainingInputDTO.getId());
                     SessionExerciseKey sessionExerciseKey = new SessionExerciseKey();
                     sessionExerciseKey.setTrainingDayId(trainingDay.getId());
-                    sessionExerciseKey.setExerciseId(trainingUploadInputDTO.getExercise());
+                    sessionExerciseKey.setExerciseId(trainingInputDTO.getExercise());
                     TrainingSession trainingSession = new TrainingSession(
                             sessionExerciseKey,
                             trainingDay,
-                            exerciseRepository.findById(trainingUploadInputDTO.getExercise()).orElseThrow(),
-                            trainingUploadInputDTO.getSeries(),
-                            trainingUploadInputDTO.getReps()
+                            exerciseRepository.findById(trainingInputDTO.getExercise()).orElseThrow(),
+                            trainingInputDTO.getSeries(),
+                            trainingInputDTO.getReps()
                             );
                     trainingSessionRepository.save(trainingSession);
                     System.out.println("saved session");
@@ -94,17 +94,17 @@ public class TrainingService {
         return extractedList;
     }
 
-    public boolean validateTraining(TrainingUploadDTO trainingUploadDTO){
+    public boolean validateTraining(TrainingDTO trainingDTO){
         try {
-            if (trainingUploadDTO.getTrainingTitle() == null || trainingUploadDTO.getTrainingDesc() == null) {
+            if (trainingDTO.getTrainingTitle() == null || trainingDTO.getTrainingDesc() == null) {
                 return false;
             }
-            for (TrainingUploadDetailDTO trainingUploadDetailDTO : trainingUploadDTO.getTrainingDetails()) {
-                for (TrainingUploadInputDTO trainingUploadInputDTO : trainingUploadDetailDTO.getInputs()) {
-                    if (trainingUploadInputDTO.getExercise() == null ||
-                            exerciseRepository.findById(trainingUploadInputDTO.getExercise()).orElse(null) == null ||
-                            trainingUploadInputDTO.getReps() == 0 ||
-                            trainingUploadInputDTO.getSeries() == 0
+            for (TrainingDetailDTO trainingDetailDTO : trainingDTO.getTrainingDetails()) {
+                for (TrainingInputDTO trainingInputDTO : trainingDetailDTO.getInputs()) {
+                    if (trainingInputDTO.getExercise() == null ||
+                            exerciseRepository.findById(trainingInputDTO.getExercise()).orElse(null) == null ||
+                            trainingInputDTO.getReps() == 0 ||
+                            trainingInputDTO.getSeries() == 0
                     ) {
                         return false;
                     }
