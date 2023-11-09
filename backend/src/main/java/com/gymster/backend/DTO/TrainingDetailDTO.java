@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TrainingUploadDetailDTO {
+public class TrainingDetailDTO {
     private int id;
-    private List<TrainingUploadInputDTO> inputs;
+    private List<TrainingInputDTO> inputs;
 }

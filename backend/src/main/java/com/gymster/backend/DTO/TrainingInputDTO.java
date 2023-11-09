@@ -3,7 +3,7 @@ package com.gymster.backend.DTO;
 import lombok.Data;
 
 @Data
-public class TrainingUploadInputDTO {
+public class TrainingInputDTO {
 
     private Long id;
     private int series;

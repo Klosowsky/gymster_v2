@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TrainingUploadDTO {
+public class TrainingDTO {
 
     private String trainingTitle;
     private String trainingDesc;
-    private List<TrainingUploadDetailDTO> trainingDetails;
+    private List<TrainingDetailDTO> trainingDetails;
 
 }

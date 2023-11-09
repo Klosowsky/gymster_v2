@@ -5,6 +5,8 @@ import com.gymster.backend.repositories.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExerciseService {
     ExerciseRepository exerciseRepository;
@@ -13,7 +15,13 @@ public class ExerciseService {
         this.exerciseRepository=exerciseRepository;
     }
 
-    public void saveExercise(Exercise exercise){
-        exerciseRepository.save(exercise);
+    public Exercise saveExercise(Exercise exercise){
+        return exerciseRepository.save(exercise);
     }
+
+    public List<Exercise> getAllExercises(){
+        return exerciseRepository.findAll();
+    }
+
+
 }

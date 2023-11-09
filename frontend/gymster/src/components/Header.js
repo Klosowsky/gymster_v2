@@ -12,8 +12,7 @@ function Header() {
   const username = localStorage.getItem("username");
   const photo = localStorage.getItem("photo");
   const navigate = useNavigate();
-  console.log('ee' +role);
-    const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(!open);

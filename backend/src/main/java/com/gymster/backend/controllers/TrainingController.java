@@ -1,18 +1,13 @@
 package com.gymster.backend.controllers;
 
 
-import com.gymster.backend.DTO.TrainingGeneralDTO;
 import com.gymster.backend.DTO.TrainingIdDTO;
-import com.gymster.backend.DTO.TrainingNameDTO;
-import com.gymster.backend.DTO.TrainingUploadDTO;
+import com.gymster.backend.DTO.TrainingDTO;
 import com.gymster.backend.models.*;
-import com.gymster.backend.repositories.ExerciseRepository;
-import com.gymster.backend.repositories.TrainingDayRepository;
 import com.gymster.backend.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,10 +30,10 @@ public class TrainingController {
         }
     }
 
-    @PostMapping("/getallbyname")
-    public ResponseEntity<List<Training>> getAllTrainingsByName(@RequestBody TrainingNameDTO trainingNameDTO){
+    @GetMapping("/getallbyname")
+    public ResponseEntity<List<Training>> getAllTrainingsByName(String trainingName){
         try{
-            return ResponseEntity.ok(trainingService.getAllTrainingsByName(trainingNameDTO.getTrainingName()));
+            return ResponseEntity.ok(trainingService.getAllTrainingsByName(trainingName));
         }catch (Exception exception){
             System.out.println(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -46,12 +41,12 @@ public class TrainingController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<TrainingIdDTO> uploadTraining (@RequestBody TrainingUploadDTO trainingUploadDTO){
+    public ResponseEntity<TrainingIdDTO> uploadTraining (@RequestBody TrainingDTO trainingDTO){
         try{
-            if(!trainingService.validateTraining(trainingUploadDTO)) {
+            if(!trainingService.validateTraining(trainingDTO)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
-            return ResponseEntity.ok(new TrainingIdDTO(trainingService.uploadTraining(trainingUploadDTO).getId()));
+            return ResponseEntity.ok(new TrainingIdDTO(trainingService.uploadTraining(trainingDTO).getId()));
         }catch (Exception ex){
             System.out.println( ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

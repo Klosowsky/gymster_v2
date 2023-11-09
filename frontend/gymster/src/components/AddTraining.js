@@ -6,36 +6,55 @@ import { C_API_BASE_URL } from '../global/Api';
 import {  useNavigate  } from 'react-router-dom';
 
 
-
-
 const AddTraining = () => {
 
-  
-
-  useEffect(() => {
-
-    fetchExercises()
-
-}, []);
-
-  function fetchExercises() {
-
-    console.log('fetch exercises');   /* TO DO: exercises from database - API call */
-
-
-  }
-
   const [formComponents, setFormComponents] = useState([]);
+  const [exercisesList, setExercisesList] = useState({});
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const navigate = useNavigate();
 
-  const exerciseOptions = {             
-    "1": "Exercise1",
-    "2": "Exercise2",
-    "3": "Exercise3",
-  };
+  useEffect(() => {
+    fetchExercises()
+  }, []);
 
+  function fetchExercises() {
+    const storedToken = localStorage.getItem("token");
+    try {
+      fetch(C_API_BASE_URL+'/exercise/getall', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          else {
+            //setErrMsg(globalMessages.internalServerError);
+            console.log("Response not ok! " );
+            return null;
+          }
+        })
+        .then((data) => {
+          if (data) {
+              const test = data.reduce((acc, exercise) => {
+                acc[exercise.id.toString()] = exercise.name;
+                return acc;
+              }, {});
+              setExercisesList(test);
+          } 
+        })
+        .catch((error) => {
+          console.log("Response not ok!" +error);
+          //setErrMsg(error);
+        });
+    } catch (err) {
+      console.log("Response not ok!"+err);
+     // setErrMsg(err);
+   }
+  }
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -64,7 +83,6 @@ const AddTraining = () => {
       series: '',
       reps: '',
       exercise: '',
-      valid: true,
     };
 
     const updatedComponents = [...formComponents];
@@ -74,21 +92,18 @@ const AddTraining = () => {
   };
 
   const handleExerciseChange = (componentId, inputId, value) => {
-    console.log('exercise: '+value);
     const updatedComponents = [...formComponents];
     updatedComponents[componentId - 1].inputs[inputId - 1].exercise = value;
     setFormComponents(updatedComponents);
   };
 
   const handleSeriesChange = (componentId, inputId, value) => {
-    console.log('series: '+value);
     const updatedComponents = [...formComponents];
     updatedComponents[componentId - 1].inputs[inputId - 1].series = value;
     setFormComponents(updatedComponents);
   };
 
   const handleRepsChange = (componentId, inputId, value) => {
-    console.log('reps: '+value);
     const updatedComponents = [...formComponents];
     updatedComponents[componentId - 1].inputs[inputId - 1].reps = value;
     setFormComponents(updatedComponents);
@@ -128,6 +143,10 @@ const AddTraining = () => {
       console.log(JSON.stringify(initialData));
       
     var it = 0;
+
+    if(title==='' || desc==='' || formComponents.length === 0){
+      it++;
+    }
 
     initialData.trainingDetails.forEach(item => {
       item.inputs.forEach(input => {
@@ -232,7 +251,7 @@ const AddTraining = () => {
                                                     <div className="my-inline-pos"> 
                                                         <select className="select-add-exercise" value={input.exercise} onChange={(e) => handleExerciseChange(component.id, input.id, e.target.value)}> 
                                                             <option value="" disabled hidden >Choose exercise</option> 
-                                                            {Object.entries(exerciseOptions).map(([key, value]) => (
+                                                            {Object.entries(exercisesList).map(([key, value]) => (
                                                                 <option key={key} value={key}>
                                                                     {value}
                                                                 </option>
