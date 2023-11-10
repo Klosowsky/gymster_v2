@@ -6,6 +6,7 @@ import  PublicRoute  from "./components/PublicRoute";
 import Register from "./components/Register";
 import  AddTraining  from "./components/AddTraining";
 import  Training  from "./components/Training";
+import  AdminPage  from "./components/AdminPage";
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/home" element={ <ProtectedRoute><Home /></ProtectedRoute> }/>
         <Route path="/addtraining" element={ <ProtectedRoute><AddTraining /></ProtectedRoute> } />
         <Route path="/training/:trainingId" element={ <ProtectedRoute><Training /></ProtectedRoute> } />
+        <Route path="/adminpanel" element={ <ProtectedRoute><AdminPage /></ProtectedRoute> } />
       </Routes>
     </div>
   );

@@ -36,7 +36,7 @@ function Header() {
   }, []);
 
   const redirectAdmin = () => {
-    navigate("/admin");
+    navigate("/adminpanel");
   }
 
   const redirectProfile = () => {
