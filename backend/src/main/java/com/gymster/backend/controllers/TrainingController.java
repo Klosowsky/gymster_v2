@@ -63,4 +63,14 @@ public class TrainingController {
         return ResponseEntity.ok(trainingService.printTraining(id));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteTraining(Long trainingId){
+        try{
+            trainingService.deleteTraining(trainingId);
+            return ResponseEntity.ok("ok");
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

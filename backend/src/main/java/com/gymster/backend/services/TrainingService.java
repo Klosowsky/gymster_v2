@@ -24,14 +24,16 @@ public class TrainingService {
     private final TrainingDayRepository trainingDayRepository;
     private final TrainingSessionRepository trainingSessionRepository;
     private final ExerciseRepository exerciseRepository;
+    private final RatingRepository ratingRepository;
 
-    public TrainingService(TrainingRepository trainingRepository, UserRepository userRepository, TrainingDayRepository trainingDayRepository, TrainingSessionRepository trainingSessionRepository, ExerciseRepository exerciseRepository) {
+    public TrainingService(TrainingRepository trainingRepository, UserRepository userRepository, TrainingDayRepository trainingDayRepository, TrainingSessionRepository trainingSessionRepository, ExerciseRepository exerciseRepository, RatingRepository ratingRepository) {
         this.trainingRepository = trainingRepository;
         this.userRepository = userRepository;
         this.trainingDayRepository = trainingDayRepository;
         this.trainingSessionRepository = trainingSessionRepository;
 
         this.exerciseRepository = exerciseRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public List<Training> getAllTrainings(){
@@ -44,6 +46,10 @@ public class TrainingService {
 
     public List<Training> getAllTrainingsByName(String titleSearch){
         return extractFromList(trainingRepository.findAll(),titleSearch);
+    }
+
+    public Training getTrainingById(Long id){
+        return trainingRepository.findById(id).orElse(null);
     }
 
     @Transactional(rollbackOn = Exception. class)
@@ -159,4 +165,20 @@ public class TrainingService {
 
     }
 
+    @Transactional
+    public void deleteTraining(Long trainingId){
+
+        Training training = trainingRepository.findById(trainingId).orElseThrow();
+        if(!training.getUser().getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())){
+            throw new UnsupportedOperationException();
+        }
+        List<TrainingDay> trainingDayList = trainingDayRepository.findAllByTraining(training);
+        for(TrainingDay trainingDay : trainingDayList){
+            List<TrainingSession> trainingSessionList = trainingSessionRepository.findAllByTrainingDay(trainingDay);
+            trainingSessionRepository.deleteAll(trainingSessionList);
+        }
+        trainingDayRepository.deleteAll(trainingDayList);
+        ratingRepository.deleteAll(ratingRepository.findAllByTraining(training));
+        trainingRepository.delete(training);
+    }
 }
