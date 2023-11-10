@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import  '../styles/style.css';
 import  '../styles/trainings.css';
 import Header from "./Header";
@@ -30,10 +30,7 @@ function TrainingDetails({ trainingDetails }) {
   );
 }
 
-
 const Training = () => {
-
-    const { trainingId } = useParams();
     const defaultJson = {
       "trainingTitle" : "",
       "trainingDesc" : "",
@@ -43,20 +40,18 @@ const Training = () => {
       "photoUrl" : "default_profile.jpg",
       "username" : "",
     }
-
+    const storedToken = localStorage.getItem("token");
+    const navigate = useNavigate();
     const [trainingData, setTrainingData] = useState(defaultJson);
-
-
+    const [rating, setRating] = useState("0");
+    const { trainingId } = useParams();
+    
     useEffect(() => {
-        fetchTrainings();
-   
+        fetchTraining();
     }, []);
 
-    function fetchTrainings(){
-      console.log('trrr')
-
+    function fetchTraining(){
         try {
-            const storedToken = localStorage.getItem("token");
             fetch(C_API_BASE_URL+'/training/print?id='+trainingId, {
               method: 'GET',
               headers: {
@@ -65,52 +60,122 @@ const Training = () => {
             })
               .then((response) => {
                 if (response.ok) {
-                  console.log("Response ok!");
                   return response.json();
                 }
                 else {
-                  //setErrMsg(globalMessages.internalServerError);
-                  console.log("Response not ok!1 " );
                   return null;
                 }
               })
               .then((data) => {
                 if (data) {
-                    console.log("yyyyyyyy ");
-                    console.log("m "+ JSON.stringify(data));
-                
                     setTrainingData(data);
                 } 
               })
               .catch((error) => {
-                console.log("Response not ok!2 " +error);
-                //setErrMsg(error);
+                console.log("Server error! " +error);
               });
           } catch (err) {
-            console.log("Response not ok!3 "+err);
-           // setErrMsg(err);
+            console.log("Server error! "+err);
          }
+         refreshRatings();
+    }
 
+    const rateTraining = (rate) => {
+      const ratingDTO = {
+        "trainingId" : trainingId,
+        "rating" : rate,
+      }
+      try {
+        fetch(C_API_BASE_URL+'/rating/set', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${storedToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ratingDTO),
+        })
+          .then((response) => {
+            if (response.ok) {
+              refreshRatings();
+              return null;
+            }
+            else {
+              return null;
+            }
+          })
+          .catch((error) => {
+            console.log("Server error! " +error);
+          });
+      } catch (err) {
+        console.log("Server error! "+err);
+      }
+    };
+
+    function refreshRatings(){
+      try {
+        fetch(C_API_BASE_URL+'/rating/check?trainingId='+trainingId, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${storedToken}`,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+            else {
+              return null;
+            }
+          })
+          .then((data) => {
+            if (data) {
+                setTrainingData(prevData => ({ ...prevData, likes: data.likes, dislikes: data.dislikes }));
+                setRating(data.rating);
+            } 
+          })
+          .catch((error) => {
+            console.log("Server error! " +error);
+          });
+      } catch (err) {
+        console.log("Server error! "+err);
+      }
+    }
+
+    function defeteTraining(){
+
+      // API CALL
+      try {
+        fetch(C_API_BASE_URL+'/training/delete?trainingId='+trainingId, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${storedToken}`,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              navigate("/")
+            }
+            else {
+              alert("Cannot delete training!");
+            }
+          })
+          .catch((error) => {
+            console.log("Server error! " +error);
+          });
+      } catch (err) {
+        console.log("Server error! "+err);
+      }
     }
 
 
-
 return (
-
-
     <section>
         <Header />
-
-
-
         <div className="training-details-container">
-            <div className="training-general-info-container">
-              
+            <div className="training-general-info-container">           
                 <div className="training-general-info">
-
                     <div className="training-item-usr" >
-                       
-                            <i className="fa-solid fa-trash fa-2xl" onClick="location.href='/deletetraining/<?= $training->getTrainingId()?>';"></i>
+                      {trainingData.username === localStorage.getItem("username") ? (<i className="fa-solid fa-trash fa-2xl" onClick={defeteTraining}></i>) : null}
                     </div>
                     <div className="training-item-title">
                       {trainingData.trainingTitle}
@@ -119,11 +184,17 @@ return (
                       {trainingData.trainingDesc}
                     </div>
                     <div className="training-item-rate">
-                        <div className="likes">
-                            <i className="fa-solid fa-thumbs-up fa-xl" > { trainingData.likes}</i>{/*</div>style="font-weight: 150; letter-spacing: 5px"*/}
+                        <div className="likes" onClick={rateTraining.bind(null, 1)}>
+                            <i className="fa-solid fa-thumbs-up fa-xl" style={{
+                              fontWeight: rating === 1 ? 1000 : 100,
+                              letterSpacing: '5px',
+                            }}> { trainingData.likes}</i>
                         </div>
-                        <div className="dislikes">
-                            <i className="fa-solid fa-thumbs-down fa-xl" > { trainingData.dislikes}</i>{/* style="font-weight: 150; letter-spacing: 5px" */}
+                        <div className="dislikes" onClick={rateTraining.bind(null, -1)}>
+                            <i className="fa-solid fa-thumbs-down fa-xl" style={{
+                              fontWeight: rating === -1 ? 1000 : 100,
+                              letterSpacing: '5px',
+                            }}> { trainingData.dislikes}</i>
                         </div>
                     </div>
                     <div className="training-photo-position">
@@ -136,20 +207,11 @@ return (
                 </div>
             </div>
             <div className="training-days-container">
-
               <TrainingDetails trainingDetails={trainingData.trainingDetails} />
-
             </div>
-
           </div>
-        
-</section>
-
+    </section>
 )
-
-
-
-
 }
 
 export default Training;
