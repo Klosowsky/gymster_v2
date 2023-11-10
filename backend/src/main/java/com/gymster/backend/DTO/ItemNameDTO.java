@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ItemNameDTO {
-    private String itemName;
+    private String name;
 }

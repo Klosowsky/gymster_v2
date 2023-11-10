@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "exercises")
+@Table(name = "exercises", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,7 +21,9 @@ public class ExerciseController {
     @PostMapping("/add")
     public ResponseEntity<Exercise> addExercise(@RequestBody ItemNameDTO itemNameDTO){
         try{
-            return ResponseEntity.ok(exerciseService.saveExercise(new Exercise(itemNameDTO.getItemName())));
+            Exercise exercise = new Exercise(itemNameDTO.getName());
+            System.out.println(exercise);
+            return ResponseEntity.ok(exerciseService.saveExercise(exercise));
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
