@@ -31,6 +31,8 @@ function TrainingDetails({ trainingDetails }) {
 }
 
 
+
+
 const Training = () => {
 
     const { trainingId } = useParams();
@@ -93,6 +95,21 @@ const Training = () => {
 
     }
 
+    const rateTraining = (rate) => {
+      console.log(`Rating the training with parameter: ${rate}`);
+      // api call
+
+
+
+      boldRatings();
+    };
+
+
+    function boldRatings(){
+      // set bold of icons
+
+    }
+
 
 
 return (
@@ -110,7 +127,7 @@ return (
 
                     <div className="training-item-usr" >
                        
-                            <i className="fa-solid fa-trash fa-2xl" onClick="location.href='/deletetraining/<?= $training->getTrainingId()?>';"></i>
+                            <i className="fa-solid fa-trash fa-2xl"></i>
                     </div>
                     <div className="training-item-title">
                       {trainingData.trainingTitle}
@@ -119,10 +136,10 @@ return (
                       {trainingData.trainingDesc}
                     </div>
                     <div className="training-item-rate">
-                        <div className="likes">
-                            <i className="fa-solid fa-thumbs-up fa-xl" > { trainingData.likes}</i>{/*</div>style="font-weight: 150; letter-spacing: 5px"*/}
+                        <div className="likes" onClick={rateTraining.bind(null, 1)}>
+                            <i className="fa-solid fa-thumbs-up fa-xl"> { trainingData.likes}</i>{/*</div>style="font-weight: 150; letter-spacing: 5px"*/}
                         </div>
-                        <div className="dislikes">
+                        <div className="dislikes" onClick={rateTraining.bind(null, -1)}>
                             <i className="fa-solid fa-thumbs-down fa-xl" > { trainingData.dislikes}</i>{/* style="font-weight: 150; letter-spacing: 5px" */}
                         </div>
                     </div>

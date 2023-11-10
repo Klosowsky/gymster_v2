@@ -67,9 +67,9 @@ const Home = () => {
   
 
     useEffect(() => {
-    fetchTrainings();
+        fetchTrainings();
    
-}, []);
+    }, []);
 
     function fetchTrainings(){
 
