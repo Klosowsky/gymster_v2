@@ -1,7 +1,7 @@
 import  '../styles/style.css';
 import  '../styles/trainings.css';
 import Header from "./Header";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { C_API_BASE_URL } from '../global/Api';
 
 
@@ -54,7 +54,7 @@ const AdminPage = () =>{
             <Header/>
             <div className="simple-container">
                 <div className="panel-details-container">
-                    <form className="panel-details-form">
+                    <div className="panel-details-form">
                         <input name="exercise" placeholder="exercise name" onChange={handleExerciseName}/>
                         <button type="submit" onClick={uploadExercise}>Add exercise</button>
                         <div className="error-message">
@@ -63,7 +63,7 @@ const AdminPage = () =>{
                         <div className="success-message">
                            {succesMsg}
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </section>

@@ -6,6 +6,7 @@ import com.gymster.backend.repositories.UserRepository;
 import com.gymster.backend.security.models.AuthCheckBody;
 import com.gymster.backend.DTO.AuthenticationResponseDTO;
 import com.gymster.backend.security.models.LoginRequestBody;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ public class AuthenticationService {
     private final JwtTokenService jwtTokenService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public AuthenticationResponseDTO authorize(LoginRequestBody loginRequestBody){
         System.out.println("test2 "+loginRequestBody.getUsername());
         System.out.println("test3");
@@ -35,6 +37,7 @@ public class AuthenticationService {
         return new AuthenticationResponseDTO(token, user.getRole().getId(),user.getUserDetails().getPhoto());
     }
 
+    @Transactional
     public boolean isAuthValid(AuthCheckBody authCheckBody){
         try {
             String token = authCheckBody.getToken();

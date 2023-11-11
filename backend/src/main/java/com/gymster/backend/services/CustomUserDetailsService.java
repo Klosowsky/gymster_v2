@@ -2,6 +2,7 @@ package com.gymster.backend.services;
 
 import com.gymster.backend.models.User;
 import com.gymster.backend.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,8 +16,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("aaaaaaaaaaaaa");
         User user = userRepository.findByUsername(username).orElseThrow();
+        System.out.println("bbbbbbbbbbbbb");
         return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                 .password(user.getPassword()).roles(user.getRole().getName())
                 .build();
