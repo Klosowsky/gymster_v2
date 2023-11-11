@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import logoText from '../public/img/logo.svg'; 
 import  '../styles/style.css';
 import {  useNavigate ,Link } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-
+import { C_API_BASE_URL } from '../global/Api';
 
 
 function Header() {
+
+  console.log("MMM");
+
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
   const photo = localStorage.getItem("photo");
@@ -35,12 +36,31 @@ function Header() {
     };
   }, []);
 
+  const [imageSrc, setImageSrc] = useState('');
+  const storedToken = localStorage.getItem("token");
+
+  React.useEffect(() => {
+    fetch(C_API_BASE_URL+'/userdetails/get?id=14', {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${storedToken}`,
+              }, })       // HARDCODED
+      .then(response => response.blob())
+      .then(blob => {
+        console.log("blob= "+blob);
+        const imageUrl = URL.createObjectURL(blob);
+        console.log("image = "+ imageUrl);
+        setImageSrc(imageUrl);
+      })
+      .catch(error => console.error('Error fetching image:', error));
+  }, []);
+
   const redirectAdmin = () => {
     navigate("/adminpanel");
   }
 
   const redirectProfile = () => {
-    navigate("/profile");
+    navigate("/userpanel");
   }
 
   const logOut = () => {
@@ -59,8 +79,9 @@ function Header() {
         <div className="user-username">{username}</div>
 
         <div className="user-photo">
-          <img src={`/uploads/${photo}`} className="user-profile-img" alt="IMAGE" />   {// TO DO - Add link to valid photo
-          }
+          {imageSrc && <img src={imageSrc} className="user-profile-img" alt="Image" />}
+         
+          
 
         </div>
 

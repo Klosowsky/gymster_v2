@@ -2,8 +2,13 @@ package com.gymster.backend.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gymster.backend.services.MyUserDetailsService;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @Getter
 @Setter
@@ -27,12 +32,18 @@ public class UserDetails {
 
     private String email;
 
+
     private String photo = "default_profile.jpg";
+
+    @Lob
+    private byte[] profilePhoto = MyUserDetailsService.getDefaultImage();
 
     public UserDetails(User user, String email){
         this.user=user;
         this.email=email;
     }
+
+
 
 
 }

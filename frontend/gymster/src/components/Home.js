@@ -10,8 +10,32 @@ import {globalMessages}  from '../global/Messages'
 
 
 function TrainingItem({ training }) {
-    console.log('aa ' + JSON.stringify(training) );
+    //console.log('aa ' + JSON.stringify(training) );
     const username = localStorage.getItem("username");
+    const [imageSrc, setImageSrc] = useState(null);
+    //setImageSrc(new Blob([new Uint8Array(training.user.userDetails.profilePhoto)], { type: 'image/jpg' /* or 'image/png', etc. */ }));
+
+    useEffect(() => {
+        // Assuming `training` is received or updated somehow
+        console.log('AAAAAAAAAAAAAAAAAAAAA' +training.user.userDetails.profilePhoto);
+        const binaryString = atob(training.user.userDetails.profilePhoto);
+
+// Convert the binary string to a Uint8Array
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+// Create a blob from the bytes
+        const blob = new Blob([bytes], { type: 'application/octet-stream' });
+
+            //const blob = new Blob([new Uint8Array(training.user.userDetails.profilePhoto)], { type: 'image/jpg' });
+            const imageUrl = URL.createObjectURL(blob);
+            console.log('EEEEEEEEEEEEEEEEEEEEEEEEEE' +imageUrl);
+            setImageSrc(imageUrl);
+        
+    }, [training]);
+
     return (
 
 
@@ -42,7 +66,8 @@ function TrainingItem({ training }) {
                 </div>
                 <div className="training-photo-position">
                     <div className="training-user-photo">
-                    <img src={`/uploads/${training.user.userDetails.photo}`} className="user-profile-img" alt="IMAGE" />
+                    
+                    {imageSrc && <img src={imageSrc} className="user-profile-img" alt="Image" />}
                     </div>
                 </div>
                 <div className="training-username"> <p>{training.user.username}</p>
@@ -98,7 +123,7 @@ const Home = () => {
               .then((data) => {
                 if (data) {
                     console.log("yyyyyyyy ");
-                    console.log("m "+ JSON.stringify(data));
+                    //console.log("m "+ JSON.stringify(data));
                 
                    setTrainings(data);
                 } 

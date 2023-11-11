@@ -13,7 +13,7 @@ public class TrainingDTO {
     private String trainingDesc;
     private List<TrainingDetailDTO> trainingDetails;
     private String username;
-    private String photoUrl;
+    private byte[] profilePhoto;
     private int likes;
     private int dislikes;
     Long id;

@@ -45,6 +45,7 @@ const Training = () => {
     const [trainingData, setTrainingData] = useState(defaultJson);
     const [rating, setRating] = useState("0");
     const { trainingId } = useParams();
+    const [imageSrc, setImageSrc] = useState(null);
     
     useEffect(() => {
         fetchTraining();
@@ -68,7 +69,15 @@ const Training = () => {
               })
               .then((data) => {
                 if (data) {
-                    setTrainingData(data);
+                  const binaryString = atob(data.profilePhoto);
+                  const bytes = new Uint8Array(binaryString.length);
+                  for (let i = 0; i < binaryString.length; i++) {
+                      bytes[i] = binaryString.charCodeAt(i);
+                  }
+                  const blob = new Blob([bytes], { type: 'application/octet-stream' });
+                  const imageUrl = URL.createObjectURL(blob);
+                  setImageSrc(imageUrl);
+                  setTrainingData(data);
                 } 
               })
               .catch((error) => {
@@ -199,7 +208,7 @@ return (
                     </div>
                     <div className="training-photo-position">
                         <div className="training-user-photo">
-                          <img src={`/uploads/${trainingData.photoUrl}`} className="user-profile-img" alt="IMAGE" />
+                          <img src={imageSrc} className="user-profile-img" alt="IMAGE" />
                         </div>
                     </div>
                     <div className="training-username"> <p>{trainingData.username}</p>

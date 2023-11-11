@@ -152,7 +152,7 @@ public class TrainingService {
                     .trainingTitle(training.getTitle())
                     .trainingDesc(training.getDescription())
                     .username(training.getUser().getUsername())
-                    .photoUrl(training.getUser().getUserDetails().getPhoto())
+                    .profilePhoto(training.getUser().getUserDetails().getProfilePhoto())
                     .likes(training.getLikes())
                     .dislikes(training.getDislikes())
                     .trainingDetails(trainingDetailDTOList)
