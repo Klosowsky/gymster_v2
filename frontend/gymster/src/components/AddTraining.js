@@ -32,8 +32,7 @@ const AddTraining = () => {
             return response.json();
           }
           else {
-            //setErrMsg(globalMessages.internalServerError);
-            console.log("Response not ok! " );
+            alert("Server error!");
             return null;
           }
         })
@@ -44,15 +43,13 @@ const AddTraining = () => {
                 return acc;
               }, {});
               setExercisesList(test);
-          } 
+          }
         })
         .catch((error) => {
-          console.log("Response not ok!" +error);
-          //setErrMsg(error);
+          alert("Server error! "+error);
         });
     } catch (err) {
-      console.log("Response not ok!"+err);
-     // setErrMsg(err);
+      alert("Server error! "+err);
    }
   }
 
@@ -62,11 +59,6 @@ const AddTraining = () => {
 
   const handleDescChange = (event) => {
     setDesc(event.target.value);
-  };
-
-  const iconStyles = {
-    position: 'absolute',
-    right: '20px',
   };
 
   const addComponent = () => {
@@ -140,7 +132,6 @@ const AddTraining = () => {
         trainingDesc : desc,
         trainingDetails : formComponents,
       };
-      console.log(JSON.stringify(initialData));
       
     var it = 0;
 
@@ -156,9 +147,10 @@ const AddTraining = () => {
       });
     });
 
-  if(it>0){
+  if(it > 0){
     alert("Invalid values");
   }
+
   else{
     const storedToken = localStorage.getItem("token");
     try {
@@ -172,40 +164,30 @@ const AddTraining = () => {
       })
         .then((response) => {
           if (response.ok) {
-            console.log("Response ok!");
             return response.json();
           }
           else {
-            //setErrMsg(globalMessages.internalServerError);
-            console.log("Response not ok! " );
+            alert("Server error!");
             return null;
           }
         })
         .then((data) => {
           if (data) {
-              console.log("id = " + data.trainingId);
               navigate('/training/'+data.trainingId);
           } 
         })
         .catch((error) => {
-          console.log("Response not ok!2 " +error);
-          //setErrMsg(error);
+          alert("Server error! "+error);
         });
     } catch (err) {
-      console.log("Response not ok!3 "+err);
-     // setErrMsg(err);
+      alert("Server error! "+err);
    }
-
   }
-
   };
 
-  
     return (
-
         <section> 
             <Header />
-            
                 <div className="training-details-container">
                     <div className="add-training-general-info-container">
                         <div className="add-training-title-box" id="trng-title-box">
@@ -216,7 +198,6 @@ const AddTraining = () => {
                                 <textarea value={title} onChange={handleTitleChange} id="trng-title" maxLength="40" className="new-training-title" name="trng-title" placeholder="Your title..."></textarea>
                             </div>
                         </div>
-
                         <div className="add-training-desc-box" id="trng-desc-box">
                             <div className="add-training-desc-header">
                                 <p>Description</p>
@@ -225,24 +206,19 @@ const AddTraining = () => {
                                 <textarea value={desc} onChange={handleDescChange} id="trng-desc" maxLength="100" className="new-training-desc" name="trng-desc" placeholder="Your description..."></textarea>
                             </div>
                         </div>
-
                         <div className="add-training-buttons-box">
                             <div className="upload-training" onClick={handleSubmit}>
                                 <i className="fa-sharp fa-solid fa-arrow-up-from-bracket fa-2xl"></i>
                                 <p className="p-add-workout">Upload training</p>
                             </div>
-
                         </div>
-                    </div>
-                    
-                    <div className="training-add-days-container" id="trng-days-cont"> 
-                    
-                        {formComponents.map((component) => (
-                            
+                    </div>                   
+                    <div className="training-add-days-container" id="trng-days-cont">                   
+                        {formComponents.map((component) => (                   
                                 <div className="training-day-box" id="add-day-1" key={component.id}>
                                         <div className="training-box-day-number">
                                             <p>Day {component.id}</p>
-                                            <i className="fa-solid fa-trash fa-xl" id="delete-trng-day-icon" style={iconStyles} onClick={() => removeComponent(component.id)}></i>
+                                            <i className="fa-solid fa-trash fa-xl" id="delete-trng-day-icon" style={{position: 'absolute', right: '20px',}} onClick={() => removeComponent(component.id)}></i>
                                         </div>
                                         <div className="training-box-add-exercise-list" id="trn-day-1">
                                         {component.inputs.map((input) => (
@@ -268,10 +244,8 @@ const AddTraining = () => {
                                                         <input value={input.reps} onChange={(e) => handleRepsChange(component.id, input.id, e.target.value)} type="number" min="1" max="50" placeholder="Reps"/> 
                                                     </div> 
                                                 </div>
-
                                         </div>
                                         ))}
-
                                             <div id="add-exe-btn-d1" className="add-exercise-btn" onClick={() => addInput(component.id)}>
                                                 <i className="fa-solid fa-plus fa-2xl"></i>
                                                 <p className="p-add-workout">Add exercise</p>
@@ -279,7 +253,6 @@ const AddTraining = () => {
 
                                         </div>
                                     </div>
-
                         ))}
                         <div id="add-tng-day-btn" className="add-training-day-btn" onClick={addComponent} >
                                     <i className="fa-solid fa-plus fa-2xl"></i>

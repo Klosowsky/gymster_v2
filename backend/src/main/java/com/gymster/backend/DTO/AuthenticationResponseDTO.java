@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponseDTO {
     private String token;
     private Long roleId;
-    private String photo;
 }

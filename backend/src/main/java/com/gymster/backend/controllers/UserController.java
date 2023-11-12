@@ -1,7 +1,7 @@
 package com.gymster.backend.controllers;
 
 import com.gymster.backend.DTO.RegisterResponseDTO;
-import com.gymster.backend.security.models.RegisterRequestBody;
+import com.gymster.backend.security.DTO.RegisterRequestBody;
 import com.gymster.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {

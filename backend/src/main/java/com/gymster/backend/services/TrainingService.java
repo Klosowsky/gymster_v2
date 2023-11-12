@@ -31,7 +31,6 @@ public class TrainingService {
         this.userRepository = userRepository;
         this.trainingDayRepository = trainingDayRepository;
         this.trainingSessionRepository = trainingSessionRepository;
-
         this.exerciseRepository = exerciseRepository;
         this.ratingRepository = ratingRepository;
     }
@@ -60,13 +59,10 @@ public class TrainingService {
             training.setDescription(trainingDTO.getTrainingDesc());
             training.setUser(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow());
             trainingRepository.save(training);
-            System.out.println("saved training - " +training.getId());
             for(TrainingDetailDTO trainingDetailDTO : trainingDTO.getTrainingDetails()){
                 TrainingDay trainingDay = new TrainingDay(null,training, trainingDetailDTO.getId());
                 trainingDayRepository.save(trainingDay);
-                System.out.println("saved training day - " + trainingDay.getId());
                 for(TrainingInputDTO trainingInputDTO : trainingDetailDTO.getInputs()){
-                    System.out.println("Input id = "+ trainingInputDTO.getId());
                     SessionExerciseKey sessionExerciseKey = new SessionExerciseKey();
                     sessionExerciseKey.setTrainingDayId(trainingDay.getId());
                     sessionExerciseKey.setExerciseId(trainingInputDTO.getExercise());
@@ -78,11 +74,9 @@ public class TrainingService {
                             trainingInputDTO.getReps()
                             );
                     trainingSessionRepository.save(trainingSession);
-                    System.out.println("saved session");
                 }
             }
         }catch (Exception ex){
-            System.out.println(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
         }
         return training;
@@ -133,7 +127,6 @@ public class TrainingService {
                 List<TrainingInputDTO> trainingInputDTOList = new ArrayList<>();
                 int i = 0;
                 for(TrainingSession trainingSession : trainingSessionRepository.findAllByTrainingDay(trainingDay)){
-
                     TrainingInputDTO trainingInputDTO = TrainingInputDTO.builder()
                             .id((long) i)
                             .exerciseName(trainingSession.getExercise().getName())
@@ -145,7 +138,6 @@ public class TrainingService {
                 }
                 trainingDetailDTO.setInputs(trainingInputDTOList);
                 trainingDetailDTOList.add(trainingDetailDTO);
-
             }
             return TrainingDTO.builder()
                     .id(training.getId())
@@ -159,10 +151,8 @@ public class TrainingService {
                     .build();
 
         }catch (Exception ex){
-            System.out.println(ex.getMessage());
             return null;
         }
-
     }
 
     @Transactional

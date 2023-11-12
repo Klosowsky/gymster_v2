@@ -7,13 +7,12 @@ import { C_API_BASE_URL } from '../global/Api';
 
 function Header() {
 
-  console.log("MMM");
-
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
-  const photo = localStorage.getItem("photo");
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [imageSrc, setImageSrc] = useState('');
+  const storedToken = localStorage.getItem("token");
 
   const handleOpen = () => {
     setOpen(!open);
@@ -36,20 +35,15 @@ function Header() {
     };
   }, []);
 
-  const [imageSrc, setImageSrc] = useState('');
-  const storedToken = localStorage.getItem("token");
-
   React.useEffect(() => {
-    fetch(C_API_BASE_URL+'/userdetails/get?id=14', {
+    fetch(C_API_BASE_URL+'/userdetails/getimage?username='+username, {
               method: 'GET',
               headers: {
                 'Authorization': `Bearer ${storedToken}`,
-              }, })       // HARDCODED
+              }, }) 
       .then(response => response.blob())
       .then(blob => {
-        console.log("blob= "+blob);
         const imageUrl = URL.createObjectURL(blob);
-        console.log("image = "+ imageUrl);
         setImageSrc(imageUrl);
       })
       .catch(error => console.error('Error fetching image:', error));
@@ -77,14 +71,9 @@ function Header() {
       </div>
       <div className="header-user-details" onClick={handleOpen}>
         <div className="user-username">{username}</div>
-
         <div className="user-photo">
           {imageSrc && <img src={imageSrc} className="user-profile-img" alt="Image" />}
-         
-          
-
         </div>
-
         {open ? (
         <ul className="menu">
           <li className="menu-item">
@@ -99,11 +88,7 @@ function Header() {
             </li> ) 
             : null}
         </ul>
-      ) : null}
-
-
-
-        {}
+        ) : null}
       </div>
     </div>
   );

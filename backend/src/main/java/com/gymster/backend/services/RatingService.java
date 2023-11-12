@@ -40,10 +40,6 @@ public class RatingService {
                 .training(training)
                 .rating(ratingDTO.getRating())
                 .build();
-        System.out.println(userTrainingKey);
-        System.out.println(userRating);
-
-
 
         switch (checkRating(ratingDTO.getTrainingId())) {
             case -1 -> {
@@ -56,9 +52,7 @@ public class RatingService {
                 handlePositiveRating(training, userRating);
             }
         }
-
         trainingRepository.save(training);
-
     }
 
     private void handleNegativeRating(Training training, UserRating userRating) {
@@ -94,6 +88,7 @@ public class RatingService {
         }
     }
 
+    @Transactional
     public int checkRating(Long trainingId){
         try {
             UserTrainingKey userTrainingKey = new UserTrainingKey();

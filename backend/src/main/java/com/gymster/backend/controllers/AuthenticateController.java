@@ -1,9 +1,9 @@
 package com.gymster.backend.controllers;
 
 import com.gymster.backend.DTO.AuthCheckDTO;
-import com.gymster.backend.security.models.AuthCheckBody;
+import com.gymster.backend.security.DTO.AuthCheckBody;
 import com.gymster.backend.DTO.AuthenticationResponseDTO;
-import com.gymster.backend.security.models.LoginRequestBody;
+import com.gymster.backend.security.DTO.LoginRequestBody;
 import com.gymster.backend.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
@@ -32,8 +31,6 @@ public class AuthenticateController {
         }
     }
 
-
-
     @PostMapping("/check")
     public ResponseEntity<AuthCheckDTO> isAuthValid(@RequestBody AuthCheckBody authCheckBody){
         try{
@@ -42,6 +39,4 @@ public class AuthenticateController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
 }

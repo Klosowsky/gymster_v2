@@ -23,10 +23,8 @@ public class JwtTokenService {
     private long expirationMs;
 
     public String generateToken(User user){
-        System.out.println(secret+" - "+ expirationMs);
         Date currentDate = new Date();
         Date expiredAtDate = new Date(currentDate.getTime() + expirationMs);
-        System.out.println("test");
         List<String> roles = new ArrayList<>();
         roles.add(user.getRole().getName());
         return Jwts.builder().

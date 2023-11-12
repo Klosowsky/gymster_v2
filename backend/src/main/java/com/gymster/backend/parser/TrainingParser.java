@@ -9,7 +9,7 @@ import java.util.List;
 public class TrainingParser {
 
     public static TrainingGeneralDTO parseToGeneralDTO(Training training){
-        return new TrainingGeneralDTO(training.getId(), training.getTitle(), training.getDescription(), training.getLikes(), training.getLikes(), training.getUser().getUsername(),training.getUser().getUserDetails().getEmail());
+        return new TrainingGeneralDTO(training.getId(), training.getTitle(), training.getDescription(), training.getLikes(), training.getDislikes(), training.getUser().getUsername(),training.getUser().getUserDetails().getProfilePhoto());
     }
 
     public static List<TrainingGeneralDTO> parseToGeneralDTOList(List<Training> trainingList){

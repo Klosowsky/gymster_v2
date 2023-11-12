@@ -40,12 +40,10 @@ const AdminPage = () =>{
               .catch((error) => {
                 setErrMsg("Cannot add exercise!");
                 setSuccesMsg("");
-                console.log("Server error! " +error);
               });
           } catch (err) {
             setErrMsg("Cannot add exercise!");
             setSuccesMsg("");
-            console.log("Server error! "+err);
           }
     }
 

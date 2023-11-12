@@ -4,8 +4,6 @@ package com.gymster.backend.controllers;
 import com.gymster.backend.DTO.TrainingIdDTO;
 import com.gymster.backend.DTO.TrainingDTO;
 import com.gymster.backend.models.*;
-import com.gymster.backend.repositories.TrainingDayRepository;
-import com.gymster.backend.repositories.TrainingRepository;
 import com.gymster.backend.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,16 +18,12 @@ import java.util.List;
 public class TrainingController {
 
     private final TrainingService trainingService;
-    private final TrainingDayRepository trainingDayRepository;
-    private final TrainingRepository trainingRepository;
-
 
     @GetMapping("/getall")
     public ResponseEntity<List<Training>> getAllTrainings(){
         try{
             return ResponseEntity.ok(trainingService.getAllTrainings());
         }catch (Exception exception){
-            System.out.println(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -39,7 +33,6 @@ public class TrainingController {
         try{
             return ResponseEntity.ok(trainingService.getAllTrainingsByName(trainingName));
         }catch (Exception exception){
-            System.out.println(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -52,11 +45,9 @@ public class TrainingController {
             }
             return ResponseEntity.ok(new TrainingIdDTO(trainingService.uploadTraining(trainingDTO).getId()));
         }catch (Exception ex){
-            System.out.println( ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @GetMapping("/print")
     public ResponseEntity<TrainingDTO> printTraining(Long id){
