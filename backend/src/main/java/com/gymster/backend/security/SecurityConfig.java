@@ -3,7 +3,6 @@ package com.gymster.backend.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{ //} extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class SecurityConfig{
 
     private final JwtAuthFilter jwtAuthFilter;
 
@@ -28,14 +27,13 @@ public class SecurityConfig{ //} extends SecurityConfigurerAdapter<DefaultSecuri
 
         http
                 .authorizeRequests()
-                .requestMatchers("/auth/login","/user/register","/products",
+                .requestMatchers("/auth/login","/user/register",
                         "/swagger-ui/**","/v2/api-docs","/configuration/ui","/swagger-resources/**","/configuration/security",
                         "/swagger-ui.html","/swagger-ui/*","/webjars/**","/v2/**",
                         "api/v1/auth**","/v3/api-docs/**","/v3/api-docs.yaml","/swagger-ui/**","/swagger-ui.html",
-                        "/doc/swagger-ui.html","/doc/swagger-ui/**",
-                        "/hello"
+                        "/doc/swagger-ui.html","/doc/swagger-ui/**"
                 ).permitAll()
-                .requestMatchers("/admin/users","exercise/add").hasRole("ADMIN")
+                .requestMatchers("/admin/users","/exercise/add").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().cors(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

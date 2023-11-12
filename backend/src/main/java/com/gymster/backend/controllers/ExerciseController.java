@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/exercise")
-public class ExerciseController {
+public class ExerciseController  {
 
     private final ExerciseService exerciseService;
 
@@ -22,7 +22,6 @@ public class ExerciseController {
     public ResponseEntity<Exercise> addExercise(@RequestBody ItemNameDTO itemNameDTO){
         try{
             Exercise exercise = new Exercise(itemNameDTO.getName());
-            System.out.println(exercise);
             return ResponseEntity.ok(exerciseService.saveExercise(exercise));
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -37,6 +36,5 @@ public class ExerciseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
 }

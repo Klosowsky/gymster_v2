@@ -23,19 +23,16 @@ public class MyUserDetailsService {
 
     public MyUserDetailsService(UserDetailsRepository userDetailsRepository, ResourceLoader resourceLoader, UserRepository userRepository){
         this.userDetailsRepository = userDetailsRepository;
-
         this.userRepository = userRepository;
     }
 
     public void save(UserDetails userDetails){
         userDetailsRepository.save(userDetails);
-
     }
 
     @Transactional
     public void update(UserDetailsDTO userDetailsDTO){
         try {
-            System.out.println(userDetailsDTO);
             User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
             UserDetails userDetails = userDetailsRepository.findById(user.getUserId()).orElseThrow();
             if (userDetailsDTO.getFile() != null) {
@@ -55,10 +52,14 @@ public class MyUserDetailsService {
             byte[] imageBytes = Files.readAllBytes(resource.getFile().toPath());
             return imageBytes;
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
+            e.printStackTrace();
         }
         return null;
     }
 
+    @Transactional
+    public UserDetails getByUsername(String username){
+        return userDetailsRepository.findById(userRepository.findByUsername(username).orElseThrow().getUserId()).orElseThrow();
+    }
 
 }

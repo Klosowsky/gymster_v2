@@ -1,4 +1,4 @@
-package com.gymster.backend.security.models;
+package com.gymster.backend.security.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

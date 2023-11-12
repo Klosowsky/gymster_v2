@@ -6,11 +6,12 @@ import { C_API_BASE_URL } from '../global/Api';
 
 
 
-
 const UserPanel = () => {
     const [file,setFile] = useState(null);
     const [email,setEmail] = useState('');
     const [headerKey, setHeaderKey] = useState(0);
+    const [errorMsg,setErrorMsg] = useState('');
+    const [succesMsg,setSuccesMsg] = useState('');
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -25,18 +26,11 @@ const UserPanel = () => {
       setHeaderKey(prevKey => prevKey + 1);
     };
 
-    const handleUpload = (event) => {
-      console.log("1");
-        //const file = event.target.files[0];
-        console.log("2");
+    const handleUpload = () => {
         const formData = new FormData();
-        console.log("3");
         formData.append('file', file);
-        console.log("4");
         formData.append('email', email);
-        console.log(formData);
         const storedToken = localStorage.getItem("token");
-        console.log("5");
         fetch(C_API_BASE_URL+'/userdetails/update', {
           method: 'POST',
           headers: {
@@ -47,21 +41,17 @@ const UserPanel = () => {
         .then(response => {
           if (response.ok) {
             refreshHeader();
-            console.log('Image uploaded successfully');
-            
+            setSuccesMsg('Details updated!');
           } else {
-            console.error('Error uploading image');
+            setErrorMsg('Cannot update user deails!');
           }
         })
         .catch(error => {
-          console.error('Error uploading image:', error);
+          setErrorMsg('Cannot update user deails!');
         });
       };
 
-
-
     return(
-
         <section>
             <Header key={headerKey}/>
             <div className="simple-container">
@@ -71,21 +61,16 @@ const UserPanel = () => {
                         <input name="email" onChange={handleEmailChange} type="text" placeholder="email" />
                         <button type="submit" onClick={handleUpload}>Update</button>
                         <div className="error-message">
-                           
+                            {errorMsg}
                         </div>
                         <div className="success-message">
-                           
+                            {succesMsg}
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </section>
-
     )
-
 }
 
 export default UserPanel;

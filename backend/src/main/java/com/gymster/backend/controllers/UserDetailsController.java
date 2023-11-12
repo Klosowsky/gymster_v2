@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/userdetails")
 @RequiredArgsConstructor
@@ -19,34 +17,26 @@ import java.io.IOException;
 public class UserDetailsController {
 
     private final MyUserDetailsService myUserDetailsService;
-    private final UserDetailsRepository userDetailsRepository;
 
     @PostMapping("/update")
-    public ResponseEntity<String> handleFileUpload(@RequestPart(value = "file", required = false) MultipartFile file, @RequestParam("email") String email) {
+    public ResponseEntity<String> updateDetails(@RequestPart(value = "file", required = false) MultipartFile file, @RequestParam("email") String email) {
         try {
-            System.out.println("Start1");
-            System.out.println(file);
-            System.out.println(email);
             UserDetailsDTO userDetailsDTO = new UserDetailsDTO();
             userDetailsDTO.setFile(file);
             userDetailsDTO.setEmail(email);
             myUserDetailsService.update(userDetailsDTO);
-            return ResponseEntity.ok("Image uploaded successfully");
+            return ResponseEntity.ok("ok");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error uploading image");
+            return ResponseEntity.status(500).body("Error!");
         }
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<byte[]> getImageById(Long id) {
+    @GetMapping("/getimage")
+    public ResponseEntity<byte[]> getUserImage(String username) {
        try{
-        UserDetails userDetails = userDetailsRepository.findById(id).orElseThrow();
-       return ResponseEntity.ok().body(userDetails.getProfilePhoto());
-        } catch (Exception ex ){
-            return ResponseEntity.status(500).build();
-        }
+           return ResponseEntity.ok().body(myUserDetailsService.getByUsername(username).getProfilePhoto());
+       } catch (Exception ex ){
+           return ResponseEntity.status(500).build();
+       }
     }
-
-
-
 }

@@ -22,5 +22,5 @@ public class TrainingGeneralDTO {
 
     private String username;
 
-    private String photoUrl;
+    private byte[] profilePhoto;
 }

@@ -5,7 +5,6 @@ import Header from "./Header";
 import React, { useState, useEffect } from 'react';
 import { C_API_BASE_URL } from '../global/Api';
 
-
 function TrainingDetails({ trainingDetails }) {
   return (
     <>
@@ -24,7 +23,6 @@ function TrainingDetails({ trainingDetails }) {
               ))}
             </div>
           </div>
-
       ))}
     </>
   );
@@ -81,10 +79,10 @@ const Training = () => {
                 } 
               })
               .catch((error) => {
-                console.log("Server error! " +error);
+                alert("Server error "+error);
               });
           } catch (err) {
-            console.log("Server error! "+err);
+            alert("Server error "+err);
          }
          refreshRatings();
     }
@@ -113,10 +111,10 @@ const Training = () => {
             }
           })
           .catch((error) => {
-            console.log("Server error! " +error);
+            alert("Server error "+error);
           });
       } catch (err) {
-        console.log("Server error! "+err);
+        alert("Server error "+err);
       }
     };
 
@@ -143,16 +141,14 @@ const Training = () => {
             } 
           })
           .catch((error) => {
-            console.log("Server error! " +error);
+            alert("Server error "+error);
           });
       } catch (err) {
-        console.log("Server error! "+err);
+        alert("Server error "+err);
       }
     }
 
     function defeteTraining(){
-
-      // API CALL
       try {
         fetch(C_API_BASE_URL+'/training/delete?trainingId='+trainingId, {
           method: 'DELETE',
@@ -169,13 +165,12 @@ const Training = () => {
             }
           })
           .catch((error) => {
-            console.log("Server error! " +error);
+            alert("Server error "+error);
           });
       } catch (err) {
-        console.log("Server error! "+err);
+        alert("Server error "+err);
       }
     }
-
 
 return (
     <section>

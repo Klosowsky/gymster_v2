@@ -5,7 +5,7 @@ import com.gymster.backend.models.UserDetails;
 import com.gymster.backend.repositories.RoleRepository;
 import com.gymster.backend.repositories.UserDetailsRepository;
 import com.gymster.backend.repositories.UserRepository;
-import com.gymster.backend.security.models.RegisterRequestBody;
+import com.gymster.backend.security.DTO.RegisterRequestBody;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

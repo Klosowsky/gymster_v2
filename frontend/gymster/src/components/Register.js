@@ -135,12 +135,12 @@ const Register = () => {
               <button type="submit">Register</button>
               <div className="error-message">
                     
-                    {errMsg.split('\n').map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
+                {errMsg.split('\n').map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                ))}
               </div>
             </form>
         </div>

@@ -32,9 +32,6 @@ public class UserDetails {
 
     private String email;
 
-
-    private String photo = "default_profile.jpg";
-
     @Lob
     private byte[] profilePhoto = MyUserDetailsService.getDefaultImage();
 
@@ -42,8 +39,5 @@ public class UserDetails {
         this.user=user;
         this.email=email;
     }
-
-
-
 
 }
